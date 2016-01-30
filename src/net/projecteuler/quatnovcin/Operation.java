@@ -2,6 +2,8 @@ package net.projecteuler.quatnovcin;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Operation {
@@ -12,68 +14,84 @@ public class Operation {
 		int numCifre = k;
 		long prodotto = 1;
 		int numeroSoluzioni = 0;
-		List<Integer> provati = new ArrayList<Integer>();
-		long cifre[] = new long [numCifre];
-		List<List<Integer>> listaProvati = new ArrayList<List<Integer>>();
-		List<List<Integer>> listaSoluzioni = new ArrayList<List<Integer>>();
+		List<Long> provati = new ArrayList<Long>();
+		List<Long> soluzioni = new ArrayList<Long>();
+		
+		List<Long> cifre = new ArrayList<Long>(numCifre);
+//		long cifre[] = new long [numCifre];
+		
+		List<Long> escludiDUplicati = new ArrayList<Long>();
+		
+		List<List<Long>> listaProvati = new ArrayList<List<Long>>();
+		List<List<Long>> listaSoluzioni = new ArrayList<List<Long>>();
 		
 		//inizializzo il vettore di cifre
 		for (int i=1; i<=numCifre; i++)
 		{
-			cifre[i-1] = i;
+			cifre.add((long)i);
 		}
 		
 		//faccio le moltiplicazioni
-		while (cifre[0] <= n)
+		while (cifre.get(0) <= n)
 		{
 			for (int i=numCifre; i>=0; i--)
 			{
 				prodotto = 1;
 				for (int j=0; j<numCifre; j++)
 				{
-					prodotto = prodotto * cifre[j];
+					prodotto = prodotto * cifre.get(j);
 				}
 				
-				if (prodotto < n)
-				{
-					cifre[i-1]++;
-					break;
-				} else {
-						cifre[i-1] = 1;
-						}
+				
+//				if (Collections.disjoint(listaProvati, cifre))
+//					{
+					 
+					
+					
+					if (prodotto < n)
+					{	
+						long tempIncrease = cifre.get(i-1);
+						tempIncrease ++;
+						cifre.set(i-1, tempIncrease);
+						listaProvati.add(cifre);
+						break;
+					} else if (prodotto == n){
+								numeroSoluzioni++;
+								for (int l=0; l<k; l++)
+								{
+									soluzioni.add(cifre.get(l));
+								}
+	//							System.out.println(Arrays.toString(cifre));
+								listaSoluzioni.add(soluzioni);
+								listaProvati.add(soluzioni);
+								soluzioni.clear();
+								
+								long tempIncrease = cifre.get(i-1);
+								tempIncrease ++;
+								cifre.add(i-1, tempIncrease);
+								break;
+							} else {
+								cifre.set((i-1), (long)1);
+								listaProvati.add(cifre);
+	//							cifre[i-1] = 1;
+							}
+				}
 			}
-
-			System.out.println("["+cifre[0]+" "+cifre[1]+" "+cifre[2]+" "+cifre[3]+"] - "+prodotto);
+//			System.out.println("["+cifre[0]+" "+cifre[1]+" "+cifre[2]+" "+cifre[3]+"] - "+prodotto);
+			//System.out.println(Arrays.toString(listaSoluzioni));
 		
+//		}
+	}	
+	
+	//numCifre = k
+	public int checkDisposition (int k, List<List<Long>>  listaProvati, List<Long> ultimoProvato)
+	{	
+			// Check if one list contains element from the other 7 answers
+			if (!Collections.disjoint(listaProvati, ultimoProvato))
+			{
+			  return 1;
+			}
+		return 0;
 	}
 	
-	
-	
-//	public int checkDisposition (int i, int j, int k, int l, List<List<Integer>>  listaProvati)
-//	{
-//		int size = listaProvati.size();
-//		List<Integer> provatiSupport = new ArrayList<Integer>();
-//		boolean bi, bj, bk, bl = false;
-//		
-//		
-//		for (int z=0; z<size; z++)for (int j=numCifre; j>0; j--)
-////			{
-////			cifre[j] = 1;
-////		}
-//		{
-//			provatiSupport = (List<Integer>) listaProvati.get(z);
-//			bi = provatiSupport.contains(i);
-//			bj = provatiSupport.contains(j);
-//			bk = provatiSupport.contains(k);
-//			bl = provatiSupport.contains(l);
-//			
-//			if (bi && bj && bk && bl)
-//			{
-//				return 1;
-//			}
-//		}
-//		
-//		return 0;
-//	}
-}
 }
