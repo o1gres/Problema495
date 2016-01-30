@@ -10,7 +10,7 @@ public class Operation {
 	public void calc(long n, int k) {
 
 		int numCifre = k;
-		long prodotto = 0;
+		long prodotto = 1;
 		int numeroSoluzioni = 0;
 		List<Integer> provati = new ArrayList<Integer>();
 		long cifre[] = new long [numCifre];
@@ -18,7 +18,7 @@ public class Operation {
 		List<List<Integer>> listaSoluzioni = new ArrayList<List<Integer>>();
 		
 		//inizializzo il vettore di cifre
-		for (int i=1; i<numCifre; i++)
+		for (int i=1; i<=numCifre; i++)
 		{
 			cifre[i-1] = i;
 		}
@@ -28,7 +28,13 @@ public class Operation {
 		{
 			for (int i=numCifre; i>=0; i--)
 			{
-				if (cifre[i-1] < n)
+				prodotto = 1;
+				for (int j=0; j<numCifre; j++)
+				{
+					prodotto = prodotto * cifre[j];
+				}
+				
+				if (prodotto < n)
 				{
 					cifre[i-1]++;
 					break;
@@ -37,7 +43,7 @@ public class Operation {
 						}
 			}
 
-			System.out.println("["+cifre[0]+" "+cifre[1]+" "+cifre[2]+"]");
+			System.out.println("["+cifre[0]+" "+cifre[1]+" "+cifre[2]+" "+cifre[3]+"] - "+prodotto);
 		
 	}
 	
